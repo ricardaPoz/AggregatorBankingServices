@@ -26,8 +26,8 @@ namespace AggregatorBankingServices
         public MainWindow()
         {
             InitializeComponent();
-            ViewModel.FillBankNameComboBoxCommand.Execute(null);
-            ViewModel.FillTypePayment.Execute(null);
+            ViewModel.GetAllContribution.Execute(null);
+            //.FillTypePayment.Execute(null);
         }
 
         private void button_clik_find_loan_Click(object sender, RoutedEventArgs e)

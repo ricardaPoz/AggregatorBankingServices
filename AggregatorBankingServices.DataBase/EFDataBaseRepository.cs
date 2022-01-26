@@ -39,6 +39,7 @@ public class EFDataBaseRepository : IDataBaseResponseForParsing, IDataBaseRespon
         {
             conf.CreateMap<LoanData, Loan>();
             conf.CreateMap<BankNameData, BankName>();
+            conf.CreateMap<ContributionData, Contribution>();
         });
         mapper_for_view = config_view.CreateMapper();
     }
@@ -164,7 +165,7 @@ public class EFDataBaseRepository : IDataBaseResponseForParsing, IDataBaseRespon
 
     }
 
-    public async Task<IEnumerable<Loan>> SearchLoan(BankName bank_name, TypePaymant type_payment, double rate, double loan_amount_from, double loan_amount_to)
+    public async Task<IEnumerable<Loan>> SearchLoans(BankName bank_name, TypePaymant type_payment, double rate, double loan_amount_from, double loan_amount_to)
     {
         lock (locker)
         {
@@ -182,6 +183,50 @@ public class EFDataBaseRepository : IDataBaseResponseForParsing, IDataBaseRespon
             }
 
             return mapper_for_view.ProjectTo<Loan>(loans.AsQueryable());
+        }
+    }
+
+    public async Task<IEnumerable<Contribution>> GetAllContribution()
+    {
+        lock (locker) 
+        {
+            IEnumerable<ContributionData> contributions = db_context.Contributions;
+            return mapper_for_view.ProjectTo<Contribution>(contributions.AsQueryable());
+        }
+
+    }
+
+    public async Task<IEnumerable<Capitalization>> GetTypeCapitalization()
+    {
+        lock (locker)
+        {
+            IEnumerable<Capitalization> unique_type_capitalization = db_context.Contributions
+           .Select(loan => loan.Capitalization)
+           .Distinct()
+           .Where(value => value != null)
+           .Select(type_capitalization => new Capitalization(type_capitalization));
+            return unique_type_capitalization;
+        }
+    }
+
+    public async Task<IEnumerable<Contribution>> SearchContribution(BankName bank_name, Capitalization type_capitalization, double rate, double loan_amount_from, double loan_amount_to)
+    {
+        lock (locker)
+        {
+            IEnumerable<ContributionData> loans = db_context.Contributions
+            .Where(contribution => contribution.Rate == (decimal)rate && contribution.DepositAmountFrom >= (decimal)loan_amount_from && contribution.DepositAmountTo <= (decimal)loan_amount_to);
+            if (bank_name is not null)
+            {
+                loans = loans
+                    .Where(loan => loan.NameBank == bank_name.Name);
+            }
+            if (type_capitalization is not null)
+            {
+                loans = loans
+                    .Where(loan => loan.Capitalization == type_capitalization.Value);
+            }
+
+            return mapper_for_view.ProjectTo<Contribution>(loans.AsQueryable());
         }
     }
 }

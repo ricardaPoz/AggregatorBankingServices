@@ -46,7 +46,7 @@
                            TextWrapping="Wrap"
                            HorizontalAlignment="Center"
                            TextAlignment="Center"/>
-                <TextBlock Grid.Column="4" Text="Тип платежа" 
+                <TextBlock Grid.Column="4" Text="Капитализация" 
                            FontSize="22"
                            TextWrapping="Wrap"
                            HorizontalAlignment="Center"
@@ -110,7 +110,7 @@
                 </Grid>
                 <ComboBox x:Name="ComboBoxTypePayment" Margin="5 0 5 0" Grid.Column="4"
                           ItemsSource="{Binding}"
-                          DataContext="{x:Static vm:ViewModel.TypePaymentComboBox}"
+                          DataContext="{x:Static vm:ViewModel.Capitalization}"
                           >
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
@@ -139,7 +139,7 @@
                  BorderThickness="0" 
                  Background="#F5F5F5"
                  ItemsSource="{Binding}"
-                 DataContext="{x:Static vm:ViewModel.Loans}"
+                 DataContext="{x:Static vm:ViewModel.Contribution}"
                  >
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -183,9 +183,9 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0"  VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20" Text="Cумма кредита от" FontWeight="Bold"/>
+                                           TextWrapping="Wrap" FontSize="20" Text="Cумма вклада от" FontWeight="Bold"/>
                                         <TextBlock Grid.Row="1" VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding LoanAmountFrom}" />
+                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding DepositAmountFrom}" />
                                     </Grid>
                                     <Grid Grid.Column="2" HorizontalAlignment="Center">
                                         <Grid.RowDefinitions>
@@ -193,9 +193,9 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0"  VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20" Text="Cумма кредита до"  FontWeight="Bold"/>
+                                           TextWrapping="Wrap" FontSize="20" Text="Cумма вклада до"  FontWeight="Bold"/>
                                         <TextBlock Grid.Row="1" VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding LoanAmountTo}" />
+                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding DepositAmountTo}" />
                                     </Grid>
                                     <Grid Grid.Column="3" HorizontalAlignment="Center">
                                         <Grid.RowDefinitions>
@@ -219,59 +219,6 @@
                                     </Grid>
                                 </Grid>
                             </Border>
-                            <Border BorderThickness="0 0 0 2" Grid.Row="3" BorderBrush="Black" Margin="5 10 5 10">
-                                <Grid Margin="0 0 0 10">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid Grid.Column="0" HorizontalAlignment="Center">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0"  VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20" Text="Подтверждение дохода" FontWeight="Bold"/>
-                                        <TextBlock Grid.Row="1" VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding IncomeVerification}" />
-                                    </Grid>
-                                    <Grid Grid.Column="1" HorizontalAlignment="Center">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0"  VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20" Text="Периодичность платежей" FontWeight="Bold"/>
-                                        <TextBlock Grid.Row="1" VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding PaymentFrequency}" />
-                                    </Grid>
-                                    <Grid Grid.Column="2" HorizontalAlignment="Center">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0"  VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20" Text="Наименование банка" FontWeight="Bold"/>
-                                        <TextBlock Grid.Row="1" VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding NameBank}" />
-                                    </Grid>
-                                </Grid>
-                            </Border>
-                            <Border BorderThickness="0 0 0 2" Grid.Row="4" BorderBrush="Black" Margin="5 10 5 10">
-                                <Grid Margin="0 0 0 10">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0"  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                           TextWrapping="Wrap" FontSize="20" Text="Обязательные документы" FontWeight="Bold"/>
-                                        <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding RequiredDocuments}" />
-                                    </Grid>
-                                </Grid>
-                            </Border>
                             <Border BorderThickness="0 0 0 2" Grid.Row="1" BorderBrush="Black" Margin="5 10 5 10">
                                 <Grid Margin="0 0 10 10">
                                     <Grid.ColumnDefinitions>
@@ -287,9 +234,9 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0"  VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20" Text="Тип платежа"  FontWeight="Bold"/>
+                                           TextWrapping="Wrap" FontSize="20" Text="Капитализация"  FontWeight="Bold"/>
                                         <TextBlock Grid.Row="1" VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding TypePayment}" />
+                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding Capitalization}" />
                                     </Grid>
                                     <Grid Grid.Column="1"  Margin="0 0 15 0" HorizontalAlignment="Center">
                                         <Grid.RowDefinitions>
@@ -297,9 +244,9 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0"  VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20" Text="Рассмотрение заявки" FontWeight="Bold"/>
+                                           TextWrapping="Wrap" FontSize="20" Text="Выплата процентов" FontWeight="Bold"/>
                                         <TextBlock Grid.Row="1" VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding ApplicationReview}" />
+                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding PaymentInterest}" />
                                     </Grid>
                                     <Grid Grid.Column="2"  Margin="0 0 15 0" HorizontalAlignment="Center">
                                         <Grid.RowDefinitions>
@@ -307,9 +254,9 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0"  VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20" Text="Возраст погашения (м)" FontWeight="Bold"/>
+                                           TextWrapping="Wrap" FontSize="20" Text="Пополнение" FontWeight="Bold"/>
                                         <TextBlock Grid.Row="1" VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding AgeRedemptionMan}" />
+                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding Replenishment}" />
                                     </Grid>
                                     <Grid Grid.Column="3" Margin="0 0 15 0" HorizontalAlignment="Center">
                                         <Grid.RowDefinitions>
@@ -317,9 +264,9 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0"  VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20" Text="Возраст погашения (ж)" FontWeight="Bold"/>
+                                           TextWrapping="Wrap" FontSize="20" Text="Частичное снятие" FontWeight="Bold"/>
                                         <TextBlock Grid.Row="1" VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding AgeRedemptionWomen}" />
+                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding PartialRemoval}" />
                                     </Grid>
                                     <Grid Grid.Column="4" HorizontalAlignment="Center">
                                         <Grid.RowDefinitions>
@@ -327,23 +274,9 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0"  VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20" Text="Возраст заёмщика" FontWeight="Bold"/>
+                                           TextWrapping="Wrap" FontSize="20" Text="Наименование банка" FontWeight="Bold"/>
                                         <TextBlock Grid.Row="1" VerticalAlignment="Center" 
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding BorrowerAge}" />
-                                    </Grid>
-                                </Grid>
-                            </Border>
-                            <Border BorderThickness="0 0 0 2" Grid.Row="5" BorderBrush="Black" Margin="5 10 5 10">
-                                <Grid Margin="0 0 0 10">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0"  VerticalAlignment="Center" HorizontalAlignment="Center"
-                                           TextWrapping="Wrap" FontSize="20" Text="Обязательная страховка" FontWeight="Bold"/>
-                                        <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding MandatoryInsurance}" />
+                                           TextWrapping="Wrap" FontSize="20"  Text="{Binding NameBank}" />
                                     </Grid>
                                 </Grid>
                             </Border>

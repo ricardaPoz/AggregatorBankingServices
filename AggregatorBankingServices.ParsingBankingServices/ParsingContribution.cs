@@ -40,7 +40,7 @@ public class ParsingContribution
 
             foreach (var elem in value_href)
             {
-                await Pars(bank_name, elem.Href);
+                  await Pars(bank_name, elem.Href);
             }
         }
     }
@@ -100,7 +100,7 @@ public class ParsingContribution
         bool contains_contribution = await repository.IsContainsContribution(contribution);
 
         if (!contains_contribution)
-             await repository.AddContribution(contribution);
+              await repository.AddContribution(contribution);
     }
 
     private (decimal? deposit_from, decimal? deposit_to) GetDepositAmount(string deposit)
@@ -108,7 +108,7 @@ public class ParsingContribution
         decimal deposit_from = default;
         decimal deposit_to = default;
 
-        if (deposit.Contains('$') || deposit.Contains('€') || deposit.Contains('£') || deposit.Contains('Ұ') || deposit.Contains('Ұ')) return (null, null);
+        if (deposit.Contains('$') || deposit.Contains('€') || deposit.Contains('£') || deposit.Contains('Ұ') || deposit.Contains('₣')) return (null, null);
 
         string[] split = deposit.Split('-');
         if (split.Length == 2)

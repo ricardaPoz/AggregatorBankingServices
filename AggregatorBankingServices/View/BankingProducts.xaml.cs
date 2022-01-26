@@ -26,11 +26,9 @@ namespace AggregatorBankingServices.View
         public BankingProducts()
         {
             InitializeComponent();
-            /*ViewModel.FillBankNameComboBoxCommand.Execute(null);
-            ViewModel.FillTypePayment.Execute(null);*/
-
-            IDataBaseResponseForParsing cal = new EFDataBaseRepository();
-            ParsingContribution parsing = new ParsingContribution(cal);
+            ViewModel.FillBankNameComboBoxCommand.Execute(null);
+            ViewModel.FillTypePayment.Execute(null);
+            ViewModel.GetTypeCapitalization.Execute(null);
         }
 
         private void container_MouseDown(object sender, MouseButtonEventArgs e)
@@ -71,6 +69,26 @@ namespace AggregatorBankingServices.View
         private void button_all_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.GetAllLoan.Execute(null);
+        }
+
+        private void button_clear_contributions_Click(object sender, RoutedEventArgs e)
+        {
+            ComboBoxNameBankContributions.SelectedItem = null;
+            ComboBoxCapitalization.SelectedItem = null;
+            RateSliderContributed.Value = 3;
+            SliderSumFromContributions.Value = 1;
+            SliderSumToContributions.Value = 1;
+        }
+
+        private void button_clik_find_contributions_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.FindContributionProducts
+                .Execute(new Tuple<object, object, object, object, object>(ComboBoxNameBankContributions.SelectedValue, ComboBoxCapitalization.SelectedItem, RateSliderContributed.Value, SliderSumFromContributions.Value, SliderSumToContributions.Value));
+        }
+
+        private void button_all_contribution_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GetAllContribution.Execute(null);
         }
     }
 }

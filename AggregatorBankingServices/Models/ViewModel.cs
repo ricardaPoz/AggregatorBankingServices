@@ -3,13 +3,11 @@ using AggregatorBankingServices.Helpers;
 using AggregatorBankingServices.Interaction.Interfaces;
 using AggregatorBankingServices.Interaction.Model;
 using AggregatorBankingServices.Interaction.ResponseEF;
+using AggregatorBankingServices.ParsingBankingServices;
+using AggregatorBankingServices.ParsingBankingServices.Interfaces;
 using AggregatorBankingServices.View;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace AggregatorBankingServices.Models;
@@ -18,11 +16,14 @@ public static class ViewModel
     public static ObservableCollection<Loan> Loans { get; private set; }
     public static ObservableCollection<BankName> BankNamesComboBox { get; private set; }
     public static ObservableCollection<TypePaymant> TypePaymentComboBox { get; private set; }
+    public static ObservableCollection<Contribution> Contribution { get; private set; }
+    public static ObservableCollection<Capitalization> Capitalization { get; private set; }
 
     public static event Action<bool, string> AuthorizationAccepted;
     public static event Action<bool, string> RegistrationAccepted;
 
     private static readonly IDataBaseResponse response;
+    private static readonly IDataBaseResponseForParsing responsePS;
 
     private static ICommand registration_command;
     private static ICommand authorization_command;
@@ -30,13 +31,67 @@ public static class ViewModel
     private static ICommand fiil_type_payment_combobox;
     private static ICommand find_loan_products;
     private static ICommand get_all_loan;
+    private static ICommand get_all_contribution;
+    private static ICommand get_type_capitalization;
+    private static ICommand find_contribution_products;
+
     static ViewModel()
     {
         response = new EFDataBaseRepository();
+        responsePS = new EFDataBaseRepository();
         Loans = new ObservableCollection<Loan>();
         BankNamesComboBox = new ObservableCollection<BankName>();
         TypePaymentComboBox = new ObservableCollection<TypePaymant>();
+        Contribution = new ObservableCollection<Contribution>();
+        Capitalization = new ObservableCollection<Capitalization>();
+        ParsingContribution parsing = new ParsingContribution(responsePS);
     }
+
+
+    public static ICommand FindContributionProducts => find_contribution_products ?? (find_contribution_products = new RelayCommand(async obj =>
+    {
+        var (obj1, obj2, obj3, obj4, obj5) = obj as Tuple<object, object, object, object, object>;
+        BankName bank_name = (BankName)obj1;
+        Capitalization type_capitalization = (Capitalization)obj2;
+        double rate = (double)obj3;
+        double sum_from = (double)obj4;
+        double sum_to = (double)obj5;
+
+        var contributions = await response.SearchContribution(bank_name, type_capitalization, rate, sum_from, sum_to);
+
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            Contribution.Clear();
+            foreach (var contributions in contributions)
+            {
+                Contribution.Add(contributions);
+            }
+        });
+    }));
+
+    public static ICommand GetTypeCapitalization => get_type_capitalization ?? (get_type_capitalization = new RelayCommand(async obj =>
+    {
+        var all_capitalization = await response.GetTypeCapitalization();
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            foreach (var capitalization in all_capitalization)
+            {
+                Capitalization.Add(capitalization);
+            }
+        });
+    }));
+    public static ICommand GetAllContribution => get_all_contribution ?? (get_all_contribution = new RelayCommand(async obj =>
+    {
+        var all_contribution = await response.GetAllContribution();
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            Contribution.Clear();
+            foreach (var contribution in all_contribution)
+            {
+                Contribution.Add(contribution);
+            }
+        });
+    }));
     public static ICommand GetAllLoan => get_all_loan ?? (get_all_loan = new RelayCommand(async obj =>
     {
         var all_loan = await response.GetAllLoan();
@@ -58,7 +113,7 @@ public static class ViewModel
         double sum_from = (double)obj4;
         double sum_to = (double)obj5;
 
-        var loans = await response.SearchLoan(bank_name, type_paymant, rate, sum_from, sum_to);
+        var loans = await response.SearchLoans(bank_name, type_paymant, rate, sum_from, sum_to);
 
         App.Current.Dispatcher.Invoke(() =>
         {
@@ -92,7 +147,6 @@ public static class ViewModel
             }
         });
     });
-
 
     public static ICommand RegistrationCommand => registration_command ??= new RelayCommand(async obj =>
     {

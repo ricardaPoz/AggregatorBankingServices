@@ -9,5 +9,8 @@ public interface IDataBaseResponse
     Task<IEnumerable<TypePaymant>> GetTypePayment();
     Task<IEnumerable<Loan>> GetAllLoan();
     Task<IEnumerable<BankName>> GetAllBankNames();
-    Task<IEnumerable<Loan>> SearchLoan(BankName bank_name, TypePaymant type_payment, double rate, double loan_amount_from, double loan_amount_to);
+    Task<IEnumerable<Loan>> SearchLoans(BankName bank_name, TypePaymant type_payment, double rate, double loan_amount_from, double loan_amount_to);
+    Task<IEnumerable<Contribution>> SearchContribution(BankName bank_name, Capitalization type_capitalization, double rate, double loan_amount_from, double loan_amount_to);
+    Task<IEnumerable<Contribution>> GetAllContribution();
+    Task<IEnumerable<Capitalization>> GetTypeCapitalization();
 }
