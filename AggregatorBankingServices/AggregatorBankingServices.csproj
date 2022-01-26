@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AggregatorBankingServices.DataBase\AggregatorBankingServices.DataBase.csproj" />
+    <ProjectReference Include="..\AggregatorBankingServices.Interaction\AggregatorBankingServices.Interaction.csproj" />
+    <ProjectReference Include="..\AggregatorBankingServices.ParsingBankingServices\AggregatorBankingServices.ParsingBankingServices.csproj" />
+  </ItemGroup>
+
+</Project>
