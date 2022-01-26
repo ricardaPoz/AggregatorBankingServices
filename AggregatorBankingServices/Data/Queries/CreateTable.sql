@@ -13,7 +13,7 @@ create table [Contributions]
 	[TermFrom] bigint not null, 
 	[TermTo] bigint not null,
 	[Capitalization] varchar(450) not null,
-	[PaymentInterest] varchar(450)null,
+	[PaymentInterest] varchar(450) null,
 	[Replenishment] varchar(450) not null,
 	[PartialRemoval] varchar(450) not null,
 	[NameBank] varchar(450) not null foreign key ([NameBank]) references [BankNames]([Name]) on delete cascade on update cascade

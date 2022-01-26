@@ -23,21 +23,22 @@ public class ParsingLoan
 
         foreach (var value in value_parsing)
         {
-            BankName bank_name = new BankName();
-            bank_name.Name = value.Children.Cast<IHtmlAnchorElement>().FirstOrDefault().TextContent;
+            string bank_name = value.Children.Cast<IHtmlAnchorElement>().FirstOrDefault().TextContent;
+            BankName bank = new BankName(bank_name);
 
-            bool contains_bank_name = await repository.IsContainsBankName(bank_name);
+
+            bool contains_bank_name = await repository.IsContainsBankName(bank);
 
             if (!contains_bank_name)
             {
-                await repository.AddBankName(bank_name);
+                await repository.AddBankName(bank);
             }
 
             var value_href = value.Children.Cast<IHtmlAnchorElement>().Skip(1);
 
             foreach (var elem in value_href)
             {
-                await Pars(bank_name, elem.Href);
+                await Pars(bank, elem.Href);
             }
         }
     }

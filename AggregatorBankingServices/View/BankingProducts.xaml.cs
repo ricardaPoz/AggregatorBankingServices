@@ -1,4 +1,7 @@
-﻿using AggregatorBankingServices.Models;
+﻿using AggregatorBankingServices.DataBase;
+using AggregatorBankingServices.Models;
+using AggregatorBankingServices.ParsingBankingServices;
+using AggregatorBankingServices.ParsingBankingServices.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +26,11 @@ namespace AggregatorBankingServices.View
         public BankingProducts()
         {
             InitializeComponent();
-            ViewModel.FillBankNameComboBoxCommand.Execute(null);
-            ViewModel.FillTypePayment.Execute(null);
+            /*ViewModel.FillBankNameComboBoxCommand.Execute(null);
+            ViewModel.FillTypePayment.Execute(null);*/
+
+            IDataBaseResponseForParsing cal = new EFDataBaseRepository();
+            ParsingContribution parsing = new ParsingContribution(cal);
         }
 
         private void container_MouseDown(object sender, MouseButtonEventArgs e)

@@ -80,7 +80,7 @@ public class EFDataBaseRepository : IDataBaseResponseForParsing, IDataBaseRespon
         {
             bool is_completed = false;
             UserData user_data = mapper.Map<UserData>(user);
-            bool contains_user =  db_context.Users.Any(user => user.Login == user_data.Login);
+            bool contains_user = db_context.Users.Any(user => user.Login == user_data.Login);
             if (contains_user)
             {
                 var password = db_context.Users.Where(user => user.Login == user_data.Login).Select(pass => pass.Password).FirstOrDefault();

@@ -79,7 +79,7 @@ namespace AggregatorBankingServices.DataBase.Models
                 entity.HasOne(d => d.NameBankNavigation)
                     .WithMany(p => p.Contributions)
                     .HasForeignKey(d => d.NameBank)
-                    .HasConstraintName("FK__Contribut__NameB__71D1E811");
+                    .HasConstraintName("FK__Contribut__NameB__1AD3FDA4");
             });
 
             modelBuilder.Entity<Loan>(entity =>
@@ -133,13 +133,11 @@ namespace AggregatorBankingServices.DataBase.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Login)
-                    .HasName("PK__User__5E55825A2D613BEA");
+                    .HasName("PK__User__5E55825A44922090");
 
                 entity.ToTable("User");
 
-                entity.Property(e => e.Password)
-                    .HasMaxLength(450)
-                    .IsUnicode(false);
+                entity.Property(e => e.Password).IsUnicode(false);
 
                 entity.Property(e => e.Scoring)
                     .HasMaxLength(450)
