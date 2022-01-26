@@ -1,0 +1,6 @@
+﻿using AggregatorBankingServices.ExpertSystem.ExplanatoryComponent.Interfaces;
+using AggregatorBankingServices.ExpertSystem.Interfaces;
+using AggregatorBankingServices.ExpertSystem.OutPutMachine.Interfaces;
+
+namespace AggregatorBankingServices.ExpertSystem;
+public record ExpertSystemResponse(IOutputMachineResponse OutputMachineResponse, IExplanationComponentResponse ExplanatoryMachineResponse) : IExpertSystemResponse;

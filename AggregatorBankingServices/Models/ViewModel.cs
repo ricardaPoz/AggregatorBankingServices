@@ -19,6 +19,8 @@ public static class ViewModel
     public static ObservableCollection<Contribution> Contribution { get; private set; }
     public static ObservableCollection<Capitalization> Capitalization { get; private set; }
 
+    public static User User { get; set; }
+
     public static event Action<bool, string> AuthorizationAccepted;
     public static event Action<bool, string> RegistrationAccepted;
 
@@ -44,7 +46,6 @@ public static class ViewModel
         TypePaymentComboBox = new ObservableCollection<TypePaymant>();
         Contribution = new ObservableCollection<Contribution>();
         Capitalization = new ObservableCollection<Capitalization>();
-        ParsingContribution parsing = new ParsingContribution(responsePS);
     }
 
 
@@ -169,9 +170,9 @@ public static class ViewModel
         var (objOne, objTwo) = obj as Tuple<object, object>;
         if (!(objOne is string login) || !(objTwo is string password)) return;
 
-        User user = new User(login, BCrypt.Net.BCrypt.HashPassword(password), null);
+        User = new User(login, BCrypt.Net.BCrypt.HashPassword(password), null);
 
-        var user_data = await response.GetUserNameAndPassword(user);
+        var user_data = await response.GetUserNameAndPassword(User);
         if (!user_data.is_contains)
         {
             AuthorizationAccepted?.Invoke(false, "Пользователь не найден");
@@ -182,6 +183,7 @@ public static class ViewModel
             if (BCrypt.Net.BCrypt.Verify(password, user_data.password))
             {
                 BankingProducts window_banking_product = new BankingProducts();
+                
                 window_banking_product.ShowDialog();
             }
             else

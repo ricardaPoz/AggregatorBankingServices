@@ -13,7 +13,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AggregatorBankingServices.DataBase\AggregatorBankingServices.DataBase.csproj" />
+    <ProjectReference Include="..\AggregatorBankingServices.ExpertSystem\AggregatorBankingServices.ExpertSystem.csproj" />
     <ProjectReference Include="..\AggregatorBankingServices.Interaction\AggregatorBankingServices.Interaction.csproj" />
+    <ProjectReference Include="..\AggregatorBankingServices.KnowledgeBase\AggregatorBankingServices.KnowledgeBase.csproj" />
     <ProjectReference Include="..\AggregatorBankingServices.ParsingBankingServices\AggregatorBankingServices.ParsingBankingServices.csproj" />
   </ItemGroup>
 

@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregatorBankingServices.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregatorBankingServices.ParsingBankingServices", "AggregatorBankingServices.ParsingBankingServices\AggregatorBankingServices.ParsingBankingServices.csproj", "{A124F3B7-1370-43DE-AE23-F271139D22AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AggregatorBankingServices.Interaction", "AggregatorBankingServices.Interaction\AggregatorBankingServices.Interaction.csproj", "{9667FC2F-99FD-4BF7-AA78-8FCAD69E168D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregatorBankingServices.Interaction", "AggregatorBankingServices.Interaction\AggregatorBankingServices.Interaction.csproj", "{9667FC2F-99FD-4BF7-AA78-8FCAD69E168D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregatorBankingServices.ExpertSystem", "AggregatorBankingServices.ExpertSystem\AggregatorBankingServices.ExpertSystem.csproj", "{0041D6A7-9B49-4135-8B9E-721878529F97}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AggregatorBankingServices.KnowledgeBase", "AggregatorBankingServices.KnowledgeBase\AggregatorBankingServices.KnowledgeBase.csproj", "{CA78DD88-EBB7-4B29-A18A-8873D2146AEE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpertSystemTest", "ExpertSystemTest\ExpertSystemTest.csproj", "{08FBAE4A-8A6F-4821-AFB2-7049AE9EA3EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,18 @@ Global
 		{9667FC2F-99FD-4BF7-AA78-8FCAD69E168D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9667FC2F-99FD-4BF7-AA78-8FCAD69E168D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9667FC2F-99FD-4BF7-AA78-8FCAD69E168D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0041D6A7-9B49-4135-8B9E-721878529F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0041D6A7-9B49-4135-8B9E-721878529F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0041D6A7-9B49-4135-8B9E-721878529F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0041D6A7-9B49-4135-8B9E-721878529F97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA78DD88-EBB7-4B29-A18A-8873D2146AEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA78DD88-EBB7-4B29-A18A-8873D2146AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA78DD88-EBB7-4B29-A18A-8873D2146AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA78DD88-EBB7-4B29-A18A-8873D2146AEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08FBAE4A-8A6F-4821-AFB2-7049AE9EA3EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08FBAE4A-8A6F-4821-AFB2-7049AE9EA3EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08FBAE4A-8A6F-4821-AFB2-7049AE9EA3EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08FBAE4A-8A6F-4821-AFB2-7049AE9EA3EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

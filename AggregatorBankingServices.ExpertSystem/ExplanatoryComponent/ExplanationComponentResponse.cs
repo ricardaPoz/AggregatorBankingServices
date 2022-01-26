@@ -1,0 +1,5 @@
+﻿using AggregatorBankingServices.ExpertSystem.ExplanatoryComponent.Interfaces;
+
+namespace AggregatorBankingServices.ExpertSystem.ExplanatoryComponent;
+public record ExplanationComponentResponse(IEnumerable<IExplanation> Explanations) : IExplanationComponentResponse;
+
