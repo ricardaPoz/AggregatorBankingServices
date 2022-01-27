@@ -90,5 +90,10 @@ namespace AggregatorBankingServices.View
         {
             ViewModel.GetAllContribution.Execute(null);
         }
+
+        private void button_testing_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.TestingUser.Execute(null);
+        }
     }
 }

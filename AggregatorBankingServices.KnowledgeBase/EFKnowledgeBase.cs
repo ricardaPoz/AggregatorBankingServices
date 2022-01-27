@@ -18,11 +18,12 @@ using AggregatorBankingServices.KnowledgeBase.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AggregatorBankingServices.KnowledgeBase;
-public class EFRepository : IExpertSystemRepositoty
+public class EFKnowledgeBase : IExpertSystemRepositoty, IExperSystemCRUT
 {
     private readonly KnowledgeBaseContext _context = new KnowledgeBaseContext();
     private readonly IMapper _mapper;
-    public EFRepository()
+    private readonly object locker = new object();
+    public EFKnowledgeBase()
     {
         var config = new MapperConfiguration(conf =>
         {
@@ -61,7 +62,7 @@ public class EFRepository : IExpertSystemRepositoty
     public async Task<RuleExpert> GetNextRuleAsync(IEnumerable<RuleExpert> triggered_rules)
     {
         var id_triggered_rules = triggered_rules.Select(triggered_rule => triggered_rule.Id);
-        RuleData? next_rule = await _context.Rules
+        RuleData? next_rule = _context.Rules
             .Include(rule => rule.Fact.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.Fact.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.FactResult.VariableNameNavigation.VariableTypeNameNavigation)
@@ -69,20 +70,20 @@ public class EFRepository : IExpertSystemRepositoty
             .Include(rule => rule.AdditionalRule)
             .Where(rule => !id_triggered_rules.Contains(rule.Id))
             .Where(rule => rule.Fact.VariableNameNavigation.VariableTypeName != "Вычисляемая")
-            .FirstOrDefaultAsync();
+            .FirstOrDefault();
         return _mapper.Map<RuleExpert>(next_rule);
     }
 
     public async Task<RuleExpert> GetParentRuleAsync(RuleExpert child_rule)
     {
-        RuleData? parent_rule = await _context.Rules
+        RuleData? parent_rule = _context.Rules
             .Include(rule => rule.Fact.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.Fact.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.FactResult.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.FactResult.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.AdditionalRule)
             .Where(rule => rule.AdditionalRuleId == child_rule.Id)
-            .FirstOrDefaultAsync();
+            .FirstOrDefault();
         return _mapper.Map<RuleExpert>(parent_rule);
     }
 
@@ -90,35 +91,35 @@ public class EFRepository : IExpertSystemRepositoty
     {
         if (parent_rule.AdditionalRule == null) return null;
 
-        RuleData? children_rule = await _context.Rules
+        RuleData? children_rule = _context.Rules
             .Include(rule => rule.Fact.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.Fact.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.FactResult.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.FactResult.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.AdditionalRule)
             .Where(rule => parent_rule.AdditionalRule.Id == rule.Id)
-            .FirstOrDefaultAsync();
+            .FirstOrDefault();
         return _mapper.Map<RuleExpert>(children_rule);
     }
 
     public async Task<IEnumerable<DomainValueExpert>> GetDomainValuesAsync(FactExpert fact)
     {
-        List<DomainValueData>? domain_values = await _context.DomainValues
+        List<DomainValueData>? domain_values = _context.DomainValues
             .Where(domain_value => domain_value.DomainName == fact.DomainValue.Domain.Name)
-            .ToListAsync();
+            .ToList();
         return _mapper.ProjectTo<DomainValueExpert>(domain_values.AsQueryable());
     }
 
     public async Task<IEnumerable<RuleExpert>> GetConclusionRulesAsync()
     {
-        List<RuleData>? conslusion_rules = await _context.Rules
+        List<RuleData>? conslusion_rules = _context.Rules
             .Include(rule => rule.Fact.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.Fact.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.FactResult.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.FactResult.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.AdditionalRule)
             .Where(rule => rule.Fact.VariableNameNavigation.VariableTypeNameNavigation.Name == "Вычисляемая")
-            .ToListAsync();
+            .ToList();
         return _mapper.ProjectTo<RuleExpert>(conslusion_rules.AsQueryable());
     }
 
@@ -132,5 +133,52 @@ public class EFRepository : IExpertSystemRepositoty
             .Where(fact => fact.DomainValueNameNavigation.Name == answer.SelectedAnswer)
             .FirstOrDefaultAsync();
         return _mapper.Map<FactExpert>(client_fact);
+    }
+
+    public async Task<IEnumerable<DomainExpert>> SelectDomainAsync()
+    {
+        lock (locker)
+        {
+            var domains = _context.Domains.ToList();
+            return _mapper.ProjectTo<DomainExpert>(domains.AsQueryable());
+        }
+    }
+
+    public async Task<IEnumerable<DomainValueExpert>> SelectDomainValuesAsync()
+    {
+        lock (locker)
+        {
+            var domains = _context.DomainValues.ToList();
+            return _mapper.ProjectTo<DomainValueExpert>(domains.AsQueryable());
+        }
+    }
+    public async Task<IEnumerable<VariableTypeExpert>> SelectVaribleTypesAsync()
+    {
+        lock (locker)
+        {
+            var domains = _context.VariablesTypes.ToList();
+            return _mapper.ProjectTo<VariableTypeExpert>(domains.AsQueryable());
+        }
+    }
+
+    public async Task<IEnumerable<FactExpert>> SelectFactsAsync()
+    {
+        lock (locker)
+        {
+            var facts = _context.Facts
+                .Include(fact => fact.VariableNameNavigation);
+            return _mapper.ProjectTo<FactExpert>(facts.AsQueryable());
+        }
+    }
+
+    public async Task<IEnumerable<VariableExpert>> SelectVariablesAsync()
+    {
+        lock (locker)
+        {
+            var facts = _context.Variables
+                .Include(variable => variable.DomainNameNavigation)
+                .Include(variable => variable.VariableTypeNameNavigation);
+            return _mapper.ProjectTo<VariableExpert>(facts.AsQueryable());
+        }
     }
 }

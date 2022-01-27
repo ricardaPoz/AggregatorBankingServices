@@ -5,7 +5,7 @@ using AggregatorBankingServices.ExpertSystem.Repository;
 using AggregatorBankingServices.KnowledgeBase;
 using ExpertSystemTest;
 
-IExpertSystemRepositoty repository = new EFRepository();
+IExpertSystemRepositoty repository = new EFKnowledgeBase();
 ExpertSystem expert_system = new ExpertSystem(repository);
 IExpertSystemResponse response = expert_system.GetResponse();
 while (response.OutputMachineResponse.Conclusion == null)

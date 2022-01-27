@@ -13,4 +13,6 @@ public interface IDataBaseResponse
     Task<IEnumerable<Contribution>> SearchContribution(BankName bank_name, Capitalization type_capitalization, double rate, double loan_amount_from, double loan_amount_to);
     Task<IEnumerable<Contribution>> GetAllContribution();
     Task<IEnumerable<Capitalization>> GetTypeCapitalization();
+    Task SetScoring(string login, string scoring);
+    Task<(bool is_contains, string scoring)> GetScoringBall(string login);
 }

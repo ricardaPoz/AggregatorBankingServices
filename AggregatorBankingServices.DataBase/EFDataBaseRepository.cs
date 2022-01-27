@@ -85,7 +85,25 @@ public class EFDataBaseRepository : IDataBaseResponseForParsing, IDataBaseRespon
             if (contains_user)
             {
                 var password = db_context.Users.Where(user => user.Login == user_data.Login).Select(pass => pass.Password).FirstOrDefault();
+                var scoring = db_context.Users.Where(user => user.Login == user_data.Login).Select(scoring => scoring.Scoring).FirstOrDefault();
+
                 return (is_completed = true, password);
+            }
+            else return (is_completed, null);
+        }
+    }
+
+    public async Task<(bool is_contains, string scoring)> GetScoringBall(string login)
+    {
+        lock (locker)
+        {
+            bool is_completed = false;
+            bool contains_user = db_context.Users.Any(user => user.Login == login);
+            if (contains_user)
+            {
+                var scoring = db_context.Users.Where(user => user.Login == login).Select(scoring => scoring.Scoring).FirstOrDefault();
+
+                return (is_completed = true, scoring);
             }
             else return (is_completed, null);
         }
@@ -188,7 +206,7 @@ public class EFDataBaseRepository : IDataBaseResponseForParsing, IDataBaseRespon
 
     public async Task<IEnumerable<Contribution>> GetAllContribution()
     {
-        lock (locker) 
+        lock (locker)
         {
             IEnumerable<ContributionData> contributions = db_context.Contributions;
             return mapper_for_view.ProjectTo<Contribution>(contributions.AsQueryable());
@@ -227,6 +245,16 @@ public class EFDataBaseRepository : IDataBaseResponseForParsing, IDataBaseRespon
             }
 
             return mapper_for_view.ProjectTo<Contribution>(loans.AsQueryable());
+        }
+    }
+
+    public async Task SetScoring(string login, string scoring)
+    {
+        lock (locker)
+        {
+            var user = db_context.Users.Where(user => user.Login == login).FirstOrDefault();
+            user.Scoring = scoring;
+            db_context.SaveChanges();
         }
     }
 }

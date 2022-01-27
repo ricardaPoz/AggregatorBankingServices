@@ -1,13 +1,20 @@
 ﻿using AggregatorBankingServices.DataBase;
+using AggregatorBankingServices.ExpertSystem.ExplanatoryComponent.Interfaces;
+using AggregatorBankingServices.ExpertSystem.Interfaces;
+using AggregatorBankingServices.ExpertSystem.Models;
+using AggregatorBankingServices.ExpertSystem.Repository;
 using AggregatorBankingServices.Helpers;
 using AggregatorBankingServices.Interaction.Interfaces;
 using AggregatorBankingServices.Interaction.Model;
 using AggregatorBankingServices.Interaction.ResponseEF;
-using AggregatorBankingServices.ParsingBankingServices;
+using AggregatorBankingServices.KnowledgeBase;
 using AggregatorBankingServices.ParsingBankingServices.Interfaces;
 using AggregatorBankingServices.View;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace AggregatorBankingServices.Models;
@@ -19,6 +26,12 @@ public static class ViewModel
     public static ObservableCollection<Contribution> Contribution { get; private set; }
     public static ObservableCollection<Capitalization> Capitalization { get; private set; }
 
+    public static ObservableCollection<Domain> Domains { get; private set; }
+    public static ObservableCollection<DomainValue> DomainValue { get; private set; }
+    public static ObservableCollection<VariableType> VariableTypes { get; private set; }
+    public static ObservableCollection<Fact> Facts { get; private set; }
+    public static ObservableCollection<Variable> Variables { get; private set; }
+
     public static User User { get; set; }
 
     public static event Action<bool, string> AuthorizationAccepted;
@@ -26,6 +39,7 @@ public static class ViewModel
 
     private static readonly IDataBaseResponse response;
     private static readonly IDataBaseResponseForParsing responsePS;
+    private static readonly IExperSystemCRUT response_es;
 
     private static ICommand registration_command;
     private static ICommand authorization_command;
@@ -37,18 +51,103 @@ public static class ViewModel
     private static ICommand get_type_capitalization;
     private static ICommand find_contribution_products;
 
+    private static ICommand testing_user;
+    private static ICommand change_scoring;
+
+    private static ICommand get_all_domains;
+    private static ICommand get_all_domain_values;
+    private static ICommand get_all_variable_type;
+    private static ICommand get_all_facts;
+    private static ICommand get_all_variable;
+
     static ViewModel()
     {
         response = new EFDataBaseRepository();
         responsePS = new EFDataBaseRepository();
+        response_es = new EFKnowledgeBase();
         Loans = new ObservableCollection<Loan>();
         BankNamesComboBox = new ObservableCollection<BankName>();
         TypePaymentComboBox = new ObservableCollection<TypePaymant>();
         Contribution = new ObservableCollection<Contribution>();
         Capitalization = new ObservableCollection<Capitalization>();
+        Domains = new ObservableCollection<Domain>();
+        DomainValue = new ObservableCollection<DomainValue>();
+        VariableTypes = new ObservableCollection<VariableType>();
+        Facts = new ObservableCollection<Fact>();
+        Variables = new ObservableCollection<Variable>();
     }
-
-
+    public static ICommand GetAllVariable => get_all_variable ?? (get_all_variable = new RelayCommand(async obj =>
+    {
+        var variables = await response_es.SelectVariablesAsync();
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            Variables.Clear();
+            foreach (var fact in variables)
+            {
+                Variables.Add(fact);
+            }
+        });
+    }));
+    public static ICommand GetAllFacts => get_all_facts ?? (get_all_facts = new RelayCommand(async obj =>
+    {
+        var facts = await response_es.SelectFactsAsync();
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            Facts.Clear();
+            foreach (var fact in facts)
+            {
+                Facts.Add(fact);
+            }
+        });
+    }));
+    public static ICommand GetAllVariableType => get_all_variable_type ?? (get_all_variable_type = new RelayCommand(async obj =>
+    {
+        var variables_type = await response_es.SelectVaribleTypesAsync();
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            VariableTypes.Clear();
+            foreach (var variable_type in variables_type)
+            {
+                VariableTypes.Add(variable_type);
+            }
+        });
+    }));
+    public static ICommand GetAllDomains => get_all_domains ?? (get_all_domains = new RelayCommand(async obj =>
+    {
+        var domains = await response_es.SelectDomainAsync();
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            Domains.Clear();
+            foreach (var domain in domains)
+            {
+                Domains.Add(domain);
+            }
+        });
+    }));
+    public static ICommand GetAllDomainValues => get_all_domain_values ?? (get_all_domain_values = new RelayCommand(async obj =>
+    {
+        var domain_values = await response_es.SelectDomainValuesAsync();
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            DomainValue.Clear();
+            foreach (var domain_value in domain_values)
+            {
+                DomainValue.Add(domain_value);
+            }
+        });
+    }));
+    public static ICommand ChangeScoring => change_scoring ?? (change_scoring = new RelayCommand(async obj =>
+    {
+        var (objOne, objTwo) = obj as Tuple<object, object>;
+        if (!(objOne is string login) || !(objTwo is string scoring)) return;
+        await response.SetScoring(login, scoring);
+    }));
+    public static ICommand TestingUser => testing_user ?? (testing_user = new RelayCommand(async obj =>
+    {
+        Testing testing = new Testing();
+        testing.ShowDialog();
+    }));
+   
     public static ICommand FindContributionProducts => find_contribution_products ?? (find_contribution_products = new RelayCommand(async obj =>
     {
         var (obj1, obj2, obj3, obj4, obj5) = obj as Tuple<object, object, object, object, object>;
@@ -170,7 +269,12 @@ public static class ViewModel
         var (objOne, objTwo) = obj as Tuple<object, object>;
         if (!(objOne is string login) || !(objTwo is string password)) return;
 
-        User = new User(login, BCrypt.Net.BCrypt.HashPassword(password), null);
+        var scoring = await response.GetScoringBall(login);
+        if (scoring.is_contains)
+        {
+            User = new User(login, BCrypt.Net.BCrypt.HashPassword(password), scoring.scoring);
+        }
+        else User = new User(login, BCrypt.Net.BCrypt.HashPassword(password), null);
 
         var user_data = await response.GetUserNameAndPassword(User);
         if (!user_data.is_contains)
