@@ -307,12 +307,15 @@
                                             <Button 
 								Margin="5 0 5 0" 
 								x:Name="btn_add_variable"
+                                                Click="btn_add_variable_Click"
 								Style="{DynamicResource StyleButtonAdd}"/>
                                             <Button 
+                                                Click="btn_change_variable_Click"
 								Grid.Column="1"
 								Style="{DynamicResource StyleButtonUpdate}"
 								x:Name="btn_change_variable"/>
                                             <Button Margin="5 0 0 0"
+                                                    Click="btn_remove_variable_Click"
 								Grid.Column="2" 
 								x:Name="btn_remove_variable"
 								Style="{DynamicResource StyleButtonDell}"/>
@@ -388,15 +391,18 @@
                                             <Button 
 								Margin="5 0 5 0" 
 								x:Name="btn_add_fact"
+                                                Click="btn_add_fact_Click"
 								Style="{DynamicResource StyleButtonAdd}"/>
                                             <Button 
 								Grid.Column="1"
 								Style="{DynamicResource StyleButtonUpdate}"
+                                                Click="btn_change_fact_Click"
 								x:Name="btn_change_fact"/>
                                             <Button Margin="5 0 0 0"
-								Grid.Column="2" 
-								x:Name="btn_remove_domain_fact"
-								Style="{DynamicResource StyleButtonDell}"/>
+                                                    Click="btn_remove_domain_fact_Click"
+								                    Grid.Column="2" 
+								                    x:Name="btn_remove_domain_fact"
+								                    Style="{DynamicResource StyleButtonDell}"/>
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -511,14 +517,17 @@
                                                     <ColumnDefinition/>
                                                 </Grid.ColumnDefinitions>
                                                 <Button 
+                                                    Click="btn_add_domain_value_Click"
 								Margin="5 0 5 0" 
 								x:Name="btn_add_domain_value"
 								Style="{DynamicResource StyleButtonAdd}"/>
                                                 <Button 
+                                                    Click="btn_change_domain_value_Click"
 								Grid.Column="1"
 								Style="{DynamicResource StyleButtonUpdate}"
 								x:Name="btn_change_domain_value"/>
                                                 <Button Margin="5 0 0 0"
+                                                        Click="btn_remove_domain_value_Click"
 								Grid.Column="2" 
 								x:Name="btn_remove_domain_value"
 								Style="{DynamicResource StyleButtonDell}"/>
@@ -577,9 +586,11 @@
 										x:Name="btn_add_domain"
 										Style="{DynamicResource StyleButtonAdd}"/>
                                                 <Button Grid.Column="1"
+                                                        Click="btn_change_domain_Click"
 								Style="{DynamicResource StyleButtonUpdate}"
 								x:Name="btn_change_domain"/>
                                                 <Button Margin="5 0 0 0"
+                                                        Click="btn_remove_domain_Click"
 								Grid.Column="2" 
 								x:Name="btn_remove_domain"
 								Style="{DynamicResource StyleButtonDell}"/>
@@ -610,6 +621,7 @@
                                     <RowDefinition Height="0.3*"/>
                                 </Grid.RowDefinitions>
                                 <DataGrid ItemsSource="{x:Static vm:ViewModel.Rules}"
+                                          Margin="10"
 									  AutoGenerateColumns="False"
 									  CanUserAddRows="False"
 									  CanUserDeleteRows="False"
@@ -623,7 +635,7 @@
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Width="*" Header="Наименование" FontSize="20" Binding="{Binding Name}"/>
                                         <DataGridTextColumn Width="*" Header="Id факта" FontSize="20" Binding="{Binding Fact.Id}"/>
-                                        <DataGridTextColumn Width="*" Header="Id результирующего факта" FontSize="20" Binding="{Binding FactResult.DomainValue}"/>
+                                        <DataGridTextColumn Width="*" Header="Id результирующего факта" FontSize="20" Binding="{Binding FactResult.Id}"/>
                                         <DataGridTextColumn Width="*" Header="Дополнительное правило" FontSize="20" Binding="{Binding  AdditionalRuleId}"/>
                                         <DataGridTextColumn Width="*" Header="Дополнительное правило" FontSize="20" Binding="{Binding Description}"/>
                                     </DataGrid.Columns>
@@ -633,13 +645,106 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" CornerRadius="10" BorderBrush="#D8D8D8" BorderThickness="1" Margin="5">
+                                        <TextBox x:Name="text_box_name_rule"
+											 Margin="5 0 5 0"
+											 FontSize="20" TextAlignment="Left" 
+											 HorizontalContentAlignment="Left"
+											 VerticalAlignment="Center"
+											 BorderThickness="0"/>
+                                    </Border>
+                                    <Border Grid.Column="1" CornerRadius="10" BorderBrush="#D8D8D8" BorderThickness="1" Margin="5">
+                                        <TextBox x:Name="text_box_name_rule_decription"
+											 Margin="5 0 5 0"
+											 FontSize="20" TextAlignment="Left" 
+											 HorizontalContentAlignment="Left"
+											 VerticalAlignment="Center"
+											 BorderThickness="0"/>
+                                    </Border>
                                 </Grid>
-                                <Grid Grid.Row="2">
+                                <Grid Grid.Row="2" Margin="10 0 10 0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.3*"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock HorizontalAlignment="Left"
+                                                   FontSize="20"
+                                                   VerticalAlignment="Center" Text="Id факта"/>
+                                        <Border Grid.Column="1" CornerRadius="10" BorderBrush="#D8D8D8" BorderThickness="1" Margin="5">
+                                            <TextBox x:Name="text_box_name_rule_fact_id"
+											 Margin="5 0 5 0"
+											 FontSize="20" TextAlignment="Left" 
+											 HorizontalContentAlignment="Left"
+											 VerticalAlignment="Center"
+											 BorderThickness="0"/>
+                                        </Border>
+                                    </Grid>
+                                   
+                                    <Grid Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.6*"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock HorizontalAlignment="Left"
+                                                   FontSize="20"
+                                                   VerticalAlignment="Center" Text="Id Рез. факта"/>
+                                        <Border Grid.Column="1" CornerRadius="10" BorderBrush="#D8D8D8" BorderThickness="1" Margin="5">
+                                            <TextBox x:Name="text_box_name_rule_fact_resul_id"
+											 Margin="5 0 5 0"
+											 FontSize="20" TextAlignment="Left" 
+											 HorizontalContentAlignment="Left"
+											 VerticalAlignment="Center"
+											 BorderThickness="0"/>
+                                        </Border>
+                                    </Grid>
+                                    <Grid Grid.Column="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.6*"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock HorizontalAlignment="Left"
+                                                   FontSize="20"
+                                                   VerticalAlignment="Center" Text="Доп правило"/>
+                                        <Border Grid.Column="2" CornerRadius="10" BorderBrush="#D8D8D8" BorderThickness="1"                         Margin="5">
+
+                                            <TextBox Grid.Column="1" x:Name="text_box_name_rule_fact_additinoal_rule"
+											 Margin="5 0 5 0"
+											 FontSize="20" TextAlignment="Left" 
+											 HorizontalContentAlignment="Left"
+											 VerticalAlignment="Center"
+											 BorderThickness="0"/>
+                                        </Border>
+
+                                    </Grid>
+
+                                </Grid>
+                                <Grid Grid.Row="3" Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button 
+                                        Click="btn_add_rule_value_Click"
+								Margin="5 0 5 0" 
+								x:Name="btn_add_rule_value"
+								Style="{DynamicResource StyleButtonAdd}"/>
+                                    <Button 
+                                        Click="btn_change_rule_value_Click"
+								Grid.Column="1"
+								Style="{DynamicResource StyleButtonUpdate}"
+								x:Name="btn_change_rule_value"/>
+                                    <Button Margin="5 0 0 0"
+                                            Click="btn_remove_rule_value_Click"
+								Grid.Column="2" 
+								x:Name="btn_remove_rule_value"
+								Style="{DynamicResource StyleButtonDell}"/>
                                 </Grid>
                             </Grid>
                         </Border>

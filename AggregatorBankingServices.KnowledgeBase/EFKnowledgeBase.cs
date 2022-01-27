@@ -134,6 +134,7 @@ public class EFKnowledgeBase : IExpertSystemRepositoty, IExperSystemCRUT
         lock (locker)
         {
             var domains = _context.Domains.ToList();
+            var x = domains;
             return _mapper.ProjectTo<DomainExpert>(domains.AsQueryable());
         }
     }

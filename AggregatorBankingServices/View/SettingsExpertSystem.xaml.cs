@@ -17,9 +17,6 @@ using System.Collections.ObjectModel;
 
 namespace AggregatorBankingServices.View
 {
-    /// <summary>
-    /// Логика взаимодействия для SettingsExpertSystem.xaml
-    /// </summary>
     public partial class SettingsExpertSystem : Window
     {
         public SettingsExpertSystem()
@@ -31,13 +28,11 @@ namespace AggregatorBankingServices.View
             ViewModel.GetAllFacts.Execute(null);
             ViewModel.GetAllVariable.Execute(null);
             ViewModel.GetAllRules.Execute(null);
-
-            
         }
 
         private void btn_add_domain_Click(object sender, RoutedEventArgs e)
         {
-    
+            
         }
 
         private void container_MouseDown(object sender, MouseButtonEventArgs e)
@@ -58,6 +53,76 @@ namespace AggregatorBankingServices.View
         private void cmbUncoverAndHide_Checked(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Maximized;
+        }
+
+        private void btn_add_fact_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_change_fact_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_remove_domain_fact_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_add_variable_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_change_variable_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_remove_variable_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_change_domain_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_remove_domain_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_add_domain_value_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_change_domain_value_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_remove_domain_value_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_add_rule_value_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_remove_rule_value_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_change_rule_value_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

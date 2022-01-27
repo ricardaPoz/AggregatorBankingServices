@@ -130,7 +130,7 @@ public static class ViewModel
     }));
     public static ICommand GetAllDomains => get_all_domains ?? (get_all_domains = new RelayCommand(async obj =>
     {
-        var domains = await response_es.SelectDomainAsync();
+        var domains =   response_es.SelectDomainAsync().Result;
         App.Current.Dispatcher.Invoke(() =>
         {
             Domains.Clear();
