@@ -8,4 +8,5 @@ public interface IExperSystemCRUT
     Task<IEnumerable<VariableType>> SelectVaribleTypesAsync();
     Task<IEnumerable<Fact>> SelectFactsAsync();
     Task<IEnumerable<Variable>> SelectVariablesAsync();
+    Task<IEnumerable<Rule>> SelectRulesAsync();
 }

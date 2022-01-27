@@ -30,6 +30,9 @@ namespace AggregatorBankingServices.View
             ViewModel.GetAllVariableType.Execute(null);
             ViewModel.GetAllFacts.Execute(null);
             ViewModel.GetAllVariable.Execute(null);
+            ViewModel.GetAllRules.Execute(null);
+
+            
         }
 
         private void btn_add_domain_Click(object sender, RoutedEventArgs e)

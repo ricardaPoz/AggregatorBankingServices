@@ -181,4 +181,15 @@ public class EFKnowledgeBase : IExpertSystemRepositoty, IExperSystemCRUT
             return _mapper.ProjectTo<VariableExpert>(facts.AsQueryable());
         }
     }
+
+    public async Task<IEnumerable<RuleExpert>> SelectRulesAsync()
+    {
+        lock (locker)
+        {
+            var rules = _context.Rules
+                .Include(rule => rule.Fact)
+                .ToList();
+            return _mapper.ProjectTo<RuleExpert>(rules.AsQueryable());
+        }
+    }
 }

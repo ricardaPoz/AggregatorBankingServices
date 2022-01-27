@@ -601,8 +601,47 @@
 								   FontSize="25" />
                     </TabItem.Header>
                     <TabItem.Content>
-                        <Border>
-                            
+                        <Border Margin="10 0 10 10" CornerRadius="10" Background="White">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="0.3*"/>
+                                    <RowDefinition Height="0.3*"/>
+                                    <RowDefinition Height="0.3*"/>
+                                </Grid.RowDefinitions>
+                                <DataGrid ItemsSource="{x:Static vm:ViewModel.Rules}"
+									  AutoGenerateColumns="False"
+									  CanUserAddRows="False"
+									  CanUserDeleteRows="False"
+									  FontSize="20"
+									  IsReadOnly="True"
+                                      SelectionMode="Single"
+									  BorderThickness="0"
+									  x:Name="data_grid_rules"
+									  Background="White"
+									  >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Width="*" Header="Наименование" FontSize="20" Binding="{Binding Name}"/>
+                                        <DataGridTextColumn Width="*" Header="Id факта" FontSize="20" Binding="{Binding Fact.Id}"/>
+                                        <DataGridTextColumn Width="*" Header="Id результирующего факта" FontSize="20" Binding="{Binding FactResult.Id}"/>
+                                        <DataGridTextColumn Width="*" Header="Дополнительное правило" FontSize="20" Binding="{Binding AdditionalRule}"/>
+                                        <DataGridTextColumn Width="*" Header="Дополнительное правило" FontSize="20" Binding="{Binding Description}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                </Grid>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                </Grid>
+                            </Grid>
                         </Border>
                     </TabItem.Content>
                 </TabItem>

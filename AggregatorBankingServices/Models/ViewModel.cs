@@ -31,6 +31,7 @@ public static class ViewModel
     public static ObservableCollection<VariableType> VariableTypes { get; private set; }
     public static ObservableCollection<Fact> Facts { get; private set; }
     public static ObservableCollection<Variable> Variables { get; private set; }
+    public static ObservableCollection<Rule> Rules { get; private set; }
 
     public static User User { get; set; }
 
@@ -59,6 +60,8 @@ public static class ViewModel
     private static ICommand get_all_variable_type;
     private static ICommand get_all_facts;
     private static ICommand get_all_variable;
+    private static ICommand get_all_rules;
+
 
     static ViewModel()
     {
@@ -75,7 +78,20 @@ public static class ViewModel
         VariableTypes = new ObservableCollection<VariableType>();
         Facts = new ObservableCollection<Fact>();
         Variables = new ObservableCollection<Variable>();
+        Rules = new ObservableCollection<Rule>();
     }
+    public static ICommand GetAllRules => get_all_rules ?? (get_all_rules = new RelayCommand(async obj =>
+    {
+        var rules = await response_es.SelectRulesAsync();
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            Rules.Clear();
+            foreach (var rule in rules)
+            {
+                Rules.Add(rule);
+            }
+        });
+    }));
     public static ICommand GetAllVariable => get_all_variable ?? (get_all_variable = new RelayCommand(async obj =>
     {
         var variables = await response_es.SelectVariablesAsync();
