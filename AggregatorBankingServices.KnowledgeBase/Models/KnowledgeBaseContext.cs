@@ -39,7 +39,7 @@ namespace AggregatorBankingServices.KnowledgeBase.Models
             modelBuilder.Entity<Domain>(entity =>
             {
                 entity.HasKey(e => e.Name)
-                    .HasName("PK__Domains__737584F724807270");
+                    .HasName("PK__Domains__737584F7639E75DB");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(450)
@@ -49,7 +49,7 @@ namespace AggregatorBankingServices.KnowledgeBase.Models
             modelBuilder.Entity<DomainValue>(entity =>
             {
                 entity.HasKey(e => e.Name)
-                    .HasName("PK__DomainVa__737584F71D5610E8");
+                    .HasName("PK__DomainVa__737584F74D87DB9F");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(450)
@@ -63,7 +63,7 @@ namespace AggregatorBankingServices.KnowledgeBase.Models
                     .WithMany(p => p.DomainValues)
                     .HasForeignKey(d => d.DomainName)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DomainVal__Domai__25869641");
+                    .HasConstraintName("FK__DomainVal__Domai__38996AB5");
             });
 
             modelBuilder.Entity<Fact>(entity =>
@@ -79,12 +79,14 @@ namespace AggregatorBankingServices.KnowledgeBase.Models
                 entity.HasOne(d => d.DomainValueNameNavigation)
                     .WithMany(p => p.Facts)
                     .HasForeignKey(d => d.DomainValueName)
-                    .HasConstraintName("FK__Facts__DomainVal__2F10007B");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Facts__DomainVal__4222D4EF");
 
                 entity.HasOne(d => d.VariableNameNavigation)
                     .WithMany(p => p.Facts)
                     .HasForeignKey(d => d.VariableName)
-                    .HasConstraintName("FK__Facts__VariableN__2E1BDC42");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Facts__VariableN__412EB0B6");
             });
 
             modelBuilder.Entity<Rule>(entity =>
@@ -95,26 +97,22 @@ namespace AggregatorBankingServices.KnowledgeBase.Models
                     .HasMaxLength(450)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.AdditionalRule)
-                    .WithMany(p => p.InverseAdditionalRule)
-                    .HasForeignKey(d => d.AdditionalRuleId)
-                    .HasConstraintName("FK__Rules__Additiona__33D4B598");
-
                 entity.HasOne(d => d.Fact)
                     .WithMany(p => p.RuleFacts)
                     .HasForeignKey(d => d.FactId)
-                    .HasConstraintName("FK__Rules__FactId__31EC6D26");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Rules__FactId__44FF419A");
 
                 entity.HasOne(d => d.FactResult)
                     .WithMany(p => p.RuleFactResults)
                     .HasForeignKey(d => d.FactResultId)
-                    .HasConstraintName("FK__Rules__FactResul__32E0915F");
+                    .HasConstraintName("FK__Rules__FactResul__45F365D3");
             });
 
             modelBuilder.Entity<Variable>(entity =>
             {
                 entity.HasKey(e => e.Name)
-                    .HasName("PK__Variable__737584F7B1DBA5C9");
+                    .HasName("PK__Variable__737584F7A7F0EE27");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(450)
@@ -133,18 +131,20 @@ namespace AggregatorBankingServices.KnowledgeBase.Models
                 entity.HasOne(d => d.DomainNameNavigation)
                     .WithMany(p => p.Variables)
                     .HasForeignKey(d => d.DomainName)
-                    .HasConstraintName("FK__Variables__Domai__2A4B4B5E");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Variables__Domai__3D5E1FD2");
 
                 entity.HasOne(d => d.VariableTypeNameNavigation)
                     .WithMany(p => p.Variables)
                     .HasForeignKey(d => d.VariableTypeName)
-                    .HasConstraintName("FK__Variables__Varia__2B3F6F97");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Variables__Varia__3E52440B");
             });
 
             modelBuilder.Entity<VariablesType>(entity =>
             {
                 entity.HasKey(e => e.Name)
-                    .HasName("PK__Variable__737584F73B6CD8D2");
+                    .HasName("PK__Variable__737584F70A2A011F");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(450)

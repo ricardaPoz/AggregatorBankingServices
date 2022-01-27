@@ -55,33 +55,7 @@ namespace AggregatorBankingServices.View
             UserTesting(response);
         }
 
-        private void ViewModel_UserTesting(string question, List<string> options)
-        {
-            grid_question.Children.Clear();
-            grid_variable.Children.Clear();
-            grid_variable.RowDefinitions.Clear();
-
-            TextBlock textBlock = CreateTextBlock();
-            textBlock.Text = question;
-
-            grid_question.Children.Add(textBlock);
-
-            for (int i = 0; i < options.Count; i++)
-            {
-                RowDefinition rowDefinition = new RowDefinition();
-
-                Button button = CreateButton();
-                button.Content = options[i];
-                button.Click += Button_Click;
-
-                grid_variable.RowDefinitions.Add(rowDefinition);
-
-                Grid.SetRow(button, i);
-
-                grid_variable.Children.Add(button);
-            }
-
-        }
+     
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

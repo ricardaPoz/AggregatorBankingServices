@@ -19,7 +19,7 @@ public class ExpertSystem
         _working_memory = new WorkingMemory();
         _repository = repository;
         _output_machine = new OutputMachine(_working_memory, _repository);
-        _explanatory_component = new ExplanationMachine(_working_memory);
+        _explanatory_component = new ExplanationMachine(repository, _working_memory);
     }
     public IExpertSystemResponse GetResponse(IClientAnswer answer)
     {
@@ -28,7 +28,7 @@ public class ExpertSystem
 
         IOutputMachineResponse output_machine_response = _output_machine.GetResponse().Result;
         IExplanationComponentResponse explanatory_machine_response = null;
-        if (output_machine_response.Conclusion != null) explanatory_machine_response = _explanatory_component.GetResponse();
+        if (output_machine_response.Conclusion != null) explanatory_machine_response = _explanatory_component.GetResponse().Result;
         return new ExpertSystemResponse(output_machine_response, explanatory_machine_response);
     }
 
@@ -36,7 +36,7 @@ public class ExpertSystem
     {
         IOutputMachineResponse output_machine_response = _output_machine.GetResponse().Result;
         IExplanationComponentResponse explanatory_machine_response = null;
-        if (output_machine_response.Conclusion != null) explanatory_machine_response = _explanatory_component.GetResponse();
+        if (output_machine_response.Conclusion != null) explanatory_machine_response = _explanatory_component.GetResponse().Result;
         return new ExpertSystemResponse(output_machine_response, explanatory_machine_response);
     }
 }

@@ -623,8 +623,8 @@
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Width="*" Header="Наименование" FontSize="20" Binding="{Binding Name}"/>
                                         <DataGridTextColumn Width="*" Header="Id факта" FontSize="20" Binding="{Binding Fact.Id}"/>
-                                        <DataGridTextColumn Width="*" Header="Id результирующего факта" FontSize="20" Binding="{Binding FactResult.Id}"/>
-                                        <DataGridTextColumn Width="*" Header="Дополнительное правило" FontSize="20" Binding="{Binding AdditionalRule}"/>
+                                        <DataGridTextColumn Width="*" Header="Id результирующего факта" FontSize="20" Binding="{Binding FactResult.DomainValue}"/>
+                                        <DataGridTextColumn Width="*" Header="Дополнительное правило" FontSize="20" Binding="{Binding  AdditionalRuleId}"/>
                                         <DataGridTextColumn Width="*" Header="Дополнительное правило" FontSize="20" Binding="{Binding Description}"/>
                                     </DataGrid.Columns>
                                 </DataGrid>

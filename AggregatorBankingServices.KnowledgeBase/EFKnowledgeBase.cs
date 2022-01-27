@@ -27,9 +27,7 @@ public class EFKnowledgeBase : IExpertSystemRepositoty, IExperSystemCRUT
     {
         var config = new MapperConfiguration(conf =>
         {
-            conf.CreateMap<RuleData, RuleExpert>()
-                .ForMember(rule_expert => rule_expert.AdditionalRule,
-                conf => conf.MapFrom(rule_data => rule_data.AdditionalRule));
+            conf.CreateMap<RuleData, RuleExpert>();
 
             conf.CreateMap<FactData, FactExpert>()
                 .ForMember(fact_expert => fact_expert.Variable,
@@ -67,7 +65,6 @@ public class EFKnowledgeBase : IExpertSystemRepositoty, IExperSystemCRUT
             .Include(rule => rule.Fact.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.FactResult.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.FactResult.DomainValueNameNavigation.DomainNameNavigation)
-            .Include(rule => rule.AdditionalRule)
             .Where(rule => !id_triggered_rules.Contains(rule.Id))
             .Where(rule => rule.Fact.VariableNameNavigation.VariableTypeName != "Вычисляемая")
             .FirstOrDefault();
@@ -81,7 +78,6 @@ public class EFKnowledgeBase : IExpertSystemRepositoty, IExperSystemCRUT
             .Include(rule => rule.Fact.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.FactResult.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.FactResult.DomainValueNameNavigation.DomainNameNavigation)
-            .Include(rule => rule.AdditionalRule)
             .Where(rule => rule.AdditionalRuleId == child_rule.Id)
             .FirstOrDefault();
         return _mapper.Map<RuleExpert>(parent_rule);
@@ -89,15 +85,14 @@ public class EFKnowledgeBase : IExpertSystemRepositoty, IExperSystemCRUT
 
     public async Task<RuleExpert> GetChildrenRuleAsync(RuleExpert parent_rule)
     {
-        if (parent_rule.AdditionalRule == null) return null;
+        if (parent_rule.AdditionalRuleId == null) return null;
 
         RuleData? children_rule = _context.Rules
             .Include(rule => rule.Fact.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.Fact.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.FactResult.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.FactResult.DomainValueNameNavigation.DomainNameNavigation)
-            .Include(rule => rule.AdditionalRule)
-            .Where(rule => parent_rule.AdditionalRule.Id == rule.Id)
+            .Where(rule => parent_rule.AdditionalRuleId == rule.Id)
             .FirstOrDefault();
         return _mapper.Map<RuleExpert>(children_rule);
     }
@@ -117,7 +112,6 @@ public class EFKnowledgeBase : IExpertSystemRepositoty, IExperSystemCRUT
             .Include(rule => rule.Fact.DomainValueNameNavigation.DomainNameNavigation)
             .Include(rule => rule.FactResult.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(rule => rule.FactResult.DomainValueNameNavigation.DomainNameNavigation)
-            .Include(rule => rule.AdditionalRule)
             .Where(rule => rule.Fact.VariableNameNavigation.VariableTypeNameNavigation.Name == "Вычисляемая")
             .ToList();
         return _mapper.ProjectTo<RuleExpert>(conslusion_rules.AsQueryable());
@@ -125,13 +119,13 @@ public class EFKnowledgeBase : IExpertSystemRepositoty, IExperSystemCRUT
 
     public async Task<FactExpert> GetFactByClientAnswerAsync(IClientAnswer answer)
     {
-        FactData? client_fact = await _context.Facts
+        FactData? client_fact =  _context.Facts
             .Include(fact => fact.VariableNameNavigation.VariableTypeNameNavigation)
             .Include(fact => fact.DomainValueNameNavigation)
             .Include(fact => fact.DomainValueNameNavigation.DomainNameNavigation)
             .Where(fact => fact.VariableNameNavigation.Question == answer.Question)
             .Where(fact => fact.DomainValueNameNavigation.Name == answer.SelectedAnswer)
-            .FirstOrDefaultAsync();
+            .FirstOrDefault();
         return _mapper.Map<FactExpert>(client_fact);
     }
 
